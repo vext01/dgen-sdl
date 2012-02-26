@@ -114,6 +114,9 @@
 #define PDK_RMETA SDLK_RMETA
 #define PDK_INVALID -42
 
+// prototypes for functions needed elsewhere
+void pd_message(const char *, ...);
+
 // There, that wasn't so hard, was it? :)
 // If you want to inline any pd_ functions, put their bodies here.
 // Otherwise, you're done with this file! :D

@@ -7,10 +7,12 @@
 #ifdef HAVE_MEMCPY_H
 #include "memcpy.h"
 #endif
+
 #include "md.h"
 #include "system.h"
 #include "romload.h"
 #include "rc-vars.h"
+#include "debug.h"
 
 extern FILE *debug_log;
 
@@ -325,6 +327,9 @@ md::md(bool pal, char region):
 #ifdef WITH_MZ80
 	md_mz80_ref(0), md_mz80_prev(0),
 #endif
+#ifdef WITH_DEBUGGER
+
+#endif
 	pal(pal), ok_ym2612(false), ok_sn76496(false),
 	vdp(*this), region(region)
 {
@@ -458,6 +463,10 @@ md::md(bool pal, char region):
 #endif
 
   z80_init();
+
+#ifdef WITH_DEBUGGER
+  debug_init();
+#endif
 
   reset(); // reset megadrive
 

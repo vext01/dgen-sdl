@@ -3416,7 +3416,13 @@ int pd_handle_events(md &megad)
 	  }
           else if(ksym == dgen_screenshot) {
             do_screenshot();
-          }
+          } else if(ksym == dgen_debug_enter) {
+#ifdef WITH_DEBUGGER
+	    megad.debug_enter();
+#else
+	    printf("debugger support not built in\n");
+#endif
+	  }
 	  break;
 	case SDL_VIDEORESIZE:
 	{

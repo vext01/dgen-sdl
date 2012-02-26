@@ -67,7 +67,10 @@ dgen_SOURCES =		\
 	ckvp.h		\
 	md-phil.h	\
 	md-phil.cpp	\
-	system.c
+	system.c	\
+	debug.cpp	\
+	linenoise/linenoise.h \
+	linenoise/linenoise.c
 
 # CZ80
 if WITH_CZ80

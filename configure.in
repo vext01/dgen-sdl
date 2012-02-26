@@ -460,6 +460,22 @@ AS_IF(
 	[AC_MSG_WARN([neither Musashi nor StarScream are enabled])]
 )
 
+dnl check if debugger should be enabled
+AC_ARG_ENABLE(
+	[debugger],
+	[AS_HELP_STRING(
+		[--enable-debugger],
+		[enable debugger [default=no]]
+	)],
+	[USE_DEBUGGER=$enableval],
+	[USE_DEBUGGER=no]
+)
+
+AS_IF(
+	[test "x$WITH_MUSA" != xyes -a "x$USE_DEBUGGER" = xyes],
+	[AC_MSG_FAILURE([debugger support requires musa cpu core])]
+)
+
 AC_ARG_WITH(
 	[mz80],
 	[AS_HELP_STRING(
@@ -487,6 +503,7 @@ LIBS="$TOBIN_LIBS"
 dnl Define everything.
 AS_IF([test "x$USE_OPENGL" = xyes], [AC_DEFINE([WITH_OPENGL])])
 AS_IF([test "x$USE_LIBARCHIVE" = xyes], [AC_DEFINE([WITH_LIBARCHIVE])])
+AS_IF([test "x$USE_DEBUGGER" = xyes], [AC_DEFINE([WITH_DEBUGGER])])
 AS_IF([test "x$USE_DEBUG" != xyes], [AC_DEFINE([NDEBUG])])
 AS_IF([test "x$USE_JOYSTICK" != x], [AC_DEFINE([WITH_JOYSTICK])])
 AS_IF([test "x$USE_JOYSTICK" = xSDL], [AC_DEFINE([WITH_SDL_JOYSTICK])])
@@ -545,6 +562,7 @@ Front-end
   Crap TV filters: $USE_CTV
   hqx filters: $USE_HQX
   Compressed ROMs: $USE_LIBARCHIVE
+  Debugger: $USE_DEBUGGER
   Debugging: $USE_DEBUG
 
 CPU cores

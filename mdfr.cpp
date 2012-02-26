@@ -11,6 +11,7 @@
 #include "memcpy.h"
 #endif
 #include "md.h"
+#include "debug.h"
 
 // Set and unset contexts (Musashi, StarScream, MZ80)
 
@@ -134,9 +135,28 @@ void md::m68k_run()
 		return;
 	m68k_st_running = 1;
 #ifdef WITH_MUSA
-	if (cpu_emu == CPU_EMU_MUSA)
+#ifdef WITH_DEBUGGER
+	md_set_musa(1); // debug_musa_callback() from debug.cpp
+#endif
+	if (cpu_emu == CPU_EMU_MUSA) {
 		odo.m68k += m68k_execute(cycles);
-	else
+#ifdef WITH_DEBUGGER
+	md_set_musa(0);
+#endif
+
+#ifdef WITH_DEBUGGER
+		// check for breakpoint hit
+		if (m68k_bp_hit || m68k_wp_hit) {
+			debug_enter();
+
+			// reset
+			m68k_bp_hit = 0;
+			if (m68k_wp_hit)
+				debug_update_fired_wps();
+			m68k_wp_hit = 0;
+		}
+#endif
+	} else
 #endif
 #ifdef WITH_STAR
 	if (cpu_emu == CPU_EMU_STAR) {
